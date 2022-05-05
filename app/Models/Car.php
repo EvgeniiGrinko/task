@@ -73,7 +73,6 @@ class Car extends Model
   }
 
       public function equipment($group_id){
-         // dd(CarEquipment::where("car_id", $this->id)->where("group_id", $group_id)->get());
       return CarEquipment::where("car_id", $this->id)->where("group_id", $group_id)->get();
    }
    public function equipmentName($equipment_id)

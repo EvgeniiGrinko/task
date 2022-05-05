@@ -49,8 +49,8 @@ class addPathToXML extends Command
         
         //Convert XML object into JSON object
          $jsonObject = json_encode($xmlObject);
-        // dd($xmlObject->vehicle);
-        //Convert JSON object into an associative array
+
+         //Convert JSON object into an associative array
         $assArray = json_decode($jsonObject, true);
       
         $cars = $xmlObject->vehicle;
@@ -63,7 +63,6 @@ class addPathToXML extends Command
         $equipment = [];
         
             foreach($cars as $key => $value){
-                // dd((int)  $value->id);
                 $particular = Car::create([
                     "id" => (int) $value->id
                 ]);  
@@ -78,35 +77,26 @@ class addPathToXML extends Command
             
             if($value->equipment){
             for($i = 0; $i < $value->equipment->children()->count(); $i++ ){
-                // dd((int)  $value->equipment->group[$i]["id"]);
                 CarGroup::create([
                     "car_id" =>  (int) $value->id,
                     "group_id" => (int) $value->equipment->group[$i]["id"]
                 ]);
-                // dump($value->equipment->children()->count());
-                // $key = $value->equipment->group[$i]["id"];
-                // dd(toNumber($key));
+               
                 $groups[(int) $value->equipment->group[$i]['id']] = ["ru_name" => (string) $value->equipment->group[$i]['name'],
                 "group_id" => (int) $value->equipment->group[$i]['id'],
                 
             ];
-                    // $groups[] = ["ru_name" => $value->equipment->group[$i]['name']];
-                    // dump($groups);
+                    
                 for($a = 0; $a < $value->equipment->group[$i]->children()->count(); $a++){
-                    // dump($value->equipment->group[$i]->count());
                     $equipment[(int) $value->equipment->group[$i]->element[$a]['id']] = [
                         "ru_name" => (string) $value->equipment->group[$i]->element[$a]->__toString(),
                         "group_id" => (int) $value->equipment->group[$i]['id'],
                     ];
-                    // dd((int) $value->equipment->group[$i]['id']);
                     CarEquipment::create([
                         "group_id" => (int) $value->equipment->group[$i]['id'],
                         "car_id" =>  (int)  $value->id,
                         "equipment_id" => (int) $value->equipment->group[$i]->element[$a]['id'],
-                    ]); 
-                    
-                    
-                    // dump($equipment);
+                    ]);                     
                 }
             }
             
@@ -114,7 +104,6 @@ class addPathToXML extends Command
             }
              
         }
-        // dd( ($groups));
         foreach($groups as $key){
             Group::create((($key)));
         };

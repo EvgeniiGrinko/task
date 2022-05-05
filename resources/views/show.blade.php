@@ -6,7 +6,6 @@
 @section('content')
     <div class="col-md-12">
         <h1>{{  $car->brand . ' ' . $car->model . ' ' . $car->generation}}</h1>
-        {{-- @dd($car) --}}
         <table class="table">
             <tbody>
             <tr>
