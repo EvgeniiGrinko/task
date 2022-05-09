@@ -14,6 +14,6 @@ class Equipment extends Model
         return $this->belongsTo(Group::class);
     }
     public function car(){
-        return $this->belongsToMany(Car::class);
+        return $this->belongsToMany(Car::class)->using(CarEquipment::class);
      }
 }

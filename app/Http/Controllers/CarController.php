@@ -19,7 +19,7 @@ class CarController extends Controller
      */
     public function index()
     {
-    
+        // dd(Car::first()->equip()->get());
         $cars = Car::simplePaginate(10);
         return view('index', compact('cars'));
     }

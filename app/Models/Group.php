@@ -14,6 +14,6 @@ class Group extends Model
         return Equipment::where("group_id", $this->group_id)->get();
      }
      public function car(){
-        return $this->belongsToMany(Car::class);
+        return $this->belongsToMany(Car::class)->using(CarGroup::class);
      }
 }

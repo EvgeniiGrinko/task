@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('car_group', function (Blueprint $table) {
+        Schema::create('car_equipment', function (Blueprint $table) {
             $table->id();
-            $table->integer('car_id');
-            $table->integer('group_id');
+            $table->integer('car_id')->constrained()->cascadeOndelete();
+            $table->integer('equipment_id');
+            $table->integer('group_id')->constrained()->cascadeOndelete();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('car_group');
+        Schema::dropIfExists('car_equipment');
     }
 };

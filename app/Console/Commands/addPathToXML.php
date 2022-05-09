@@ -54,30 +54,24 @@ class addPathToXML extends Command
         $assArray = json_decode($jsonObject, true);
       
         $cars = $xmlObject->vehicle;
-        Car::truncate(); 
-        Equipment::truncate(); 
-        Group::truncate();   
-        CarGroup::truncate();   
-        CarEquipment::truncate();   
         $groups = [];
         $equipment = [];
-        
             foreach($cars as $key => $value){
-                $particular = Car::create([
-                    "id" => (int) $value->id
-                ]);  
+                $particular = [];  
              foreach($value as $field_name => $field_value){
-                $particular->$field_name = $field_value;
-                
-                    
-             
+                $particular[$field_name] = $field_value;
             }
-            $particular->save();
-        
-            
+                if(!Car::find($particular['id'])){
+                    Car::create($particular);
+                };
+                // Do we need to update row if object is in table?
+                // if(Car::find($particular['id'])){
+                //     Car::find($particular['id'])->update($particular);
+                // };
+                
             if($value->equipment){
             for($i = 0; $i < $value->equipment->children()->count(); $i++ ){
-                CarGroup::create([
+                CarGroup::updateOrCreate([
                     "car_id" =>  (int) $value->id,
                     "group_id" => (int) $value->equipment->group[$i]["id"]
                 ]);
@@ -92,7 +86,7 @@ class addPathToXML extends Command
                         "ru_name" => (string) $value->equipment->group[$i]->element[$a]->__toString(),
                         "group_id" => (int) $value->equipment->group[$i]['id'],
                     ];
-                    CarEquipment::create([
+                    CarEquipment::updateOrCreate([
                         "group_id" => (int) $value->equipment->group[$i]['id'],
                         "car_id" =>  (int)  $value->id,
                         "equipment_id" => (int) $value->equipment->group[$i]->element[$a]['id'],
@@ -105,10 +99,10 @@ class addPathToXML extends Command
              
         }
         foreach($groups as $key){
-            Group::create((($key)));
+            Group::updateOrCreate((($key)));
         };
         foreach($equipment as $value){
-        Equipment::create(($value)); 
+        Equipment::updateOrCreate(($value)); 
         };
     }
 }
